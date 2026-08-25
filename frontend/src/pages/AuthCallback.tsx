@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 export default function AuthCallback(){
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-
+    
     useEffect(()=>{
         const code = searchParams.get('code');
         if(!code){
@@ -15,11 +15,12 @@ export default function AuthCallback(){
 
         supabase.auth
         .exchangeCodeForSession(code)
-        .then(({error})=>{
-            if(error){
-                navigate('/login',{replace:true});
-            }else{
-                navigate('/',{replace:true})
+        .then(({ error }) => {
+            if (error) {
+            console.error('Auth callback error:', error.message);
+            navigate('/login', { replace: true });
+            } else {
+            navigate('/', { replace: true });
             }
         });
     },[navigate,searchParams]);
